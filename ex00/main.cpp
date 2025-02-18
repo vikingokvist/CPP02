@@ -2,10 +2,14 @@
 
 int		main(void)
 {
-	int x = -2;
+	Fixed a;
+	Fixed b(a);
+	Fixed c;
 
-	std::cout << x << std::endl;
-	std::cout << (x >> 4) << std::endl;
-	std::cout << (x << 1) << std::endl;
+	c = b;
+
+	std::cout << a.getRawBits() << std::endl;
+	std::cout << b.getRawBits() << std::endl;
+	std::cout << c.getRawBits() << std::endl;
 
 }
