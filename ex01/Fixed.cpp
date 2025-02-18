@@ -27,10 +27,10 @@ Fixed&	Fixed::operator=(const Fixed &copy)
 	return *this;
 }
 
-Fixed::Fixed(const int fixedPointIntNumber)
+Fixed::Fixed(const int fixedPointInt)
 {
 	std::cout << "Int constructor called" << std::endl;
-	this->fixedPointValue = fixedPointIntNumber << this->fractionalBits;
+	this->fixedPointValue = fixedPointInt << this->fractionalBits;
 }
 
 Fixed::Fixed(const float fixedPointFloat)

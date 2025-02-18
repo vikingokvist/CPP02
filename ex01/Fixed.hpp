@@ -8,13 +8,13 @@
 class Fixed
 {
 	private:
-		static const int fractionalBits;
-		int		fixedPointValue;
+		static const int 	fractionalBits;
+		int					fixedPointValue;
 
 	public:
 		Fixed();
-		Fixed(const int fixedPointIntValue);
-		Fixed(const float fixedPointFloatVlue);
+		Fixed(const int fixedPointInt);
+		Fixed(const float fixedPointFloat);
 		~Fixed();
 		Fixed(const Fixed &copy);
 		Fixed &operator=(const Fixed &copy);
