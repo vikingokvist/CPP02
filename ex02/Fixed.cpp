@@ -2,21 +2,8 @@
 
 const int	Fixed::fractionalBits = 8;
 
-//-------------------------------------------------------------------------
-//-------------------------------------------------------------CONSTRUCTORS
-
 Fixed::Fixed() {
 	this->fixedPointValue = 0;
-}
-
-Fixed::Fixed(const Fixed &other) {
-	*this = other;
-}
-
-Fixed&	Fixed::operator=(const Fixed &other) {
-	if (this != &other)
-		this->fixedPointValue = other.getRawBits();
-	return (*this);
 }
 
 Fixed::Fixed(const int fixedPointInt) {
@@ -27,8 +14,9 @@ Fixed::Fixed(const float fixedPointFloat) {
 	this->fixedPointValue = roundf(fixedPointFloat * (1 << this->fractionalBits));
 }
 
-//-------------------------------------------------------------------------
-//---------------------------------------------------------------DESTRUCTOR
+Fixed::Fixed(const Fixed &other) {
+	*this = other;
+}
 
 Fixed::~Fixed() {}
 
@@ -44,124 +32,127 @@ int		Fixed::getRawBits(void) const {
 }
 
 //-------------------------------------------------------------------------
+//--------------------------------------------OVERLOAD EQUALS OPERATORS
+
+Fixed&	Fixed::operator=(const Fixed &other) {
+	if (this != &other)
+		this->fixedPointValue = other.getRawBits();
+	return (*this);
+}
+
+//-------------------------------------------------------------------------
 //--------------------------------------------OVERLOAD COMPARISON OPERATORS
 
-bool	Fixed::operator>(const Fixed &other) {
+bool	Fixed::operator>(const Fixed &other) const {
 	return (this->toFloat() > other.toFloat());
 }
 
-bool	Fixed::operator<(const Fixed &other) {
+bool	Fixed::operator<(const Fixed &other) const {
 	return (this->toFloat() < other.toFloat());
 }
 
-bool	Fixed::operator>=(const Fixed &other) {
+bool	Fixed::operator>=(const Fixed &other) const {
 	return (this->toFloat() >= other.toFloat());
 }
 
-bool	Fixed::operator<=(const Fixed &other) {
+bool	Fixed::operator<=(const Fixed &other) const {
 	return (this->toFloat() <= other.toFloat());
 }
 
-bool	Fixed::operator==(const Fixed &other) {
+bool	Fixed::operator==(const Fixed &other) const {
 	return (this->toFloat() == other.toFloat());
 }
 
-bool	Fixed::operator!=(const Fixed &other)
-{
+bool	Fixed::operator!=(const Fixed &other) const {
 	return (this->toFloat() != other.toFloat());
 }
 
 //-------------------------------------------------------------------------
 //--------------------------------------------OVERLOAD ARITHMETIC OPERATORS
 
-float	Fixed::operator+(const Fixed &other) {
+float	Fixed::operator+(const Fixed &other) const {
 	return (this->toFloat() + other.toFloat());
 }
 
-float	Fixed::operator-(const Fixed &other) {
+float	Fixed::operator-(const Fixed &other) const {
 	return (this->toFloat() - other.toFloat());
 }
 
-float	Fixed::operator*(const Fixed &other) {
+float	Fixed::operator*(const Fixed &other) const {
 	return (this->toFloat() * other.toFloat());
 }
 
-float	Fixed::operator/(const Fixed &other) {
+float	Fixed::operator/(const Fixed &other) const {
 	return (this->toFloat() / other.toFloat());
 }
 
 //-------------------------------------------------------------------------
-//--------------------------------OVERLOAD PRE INCREMENT/DECREMENT OPERATORS
+//--------------------------------OVERLOAD PRE/POS INCREMENT/DECREMENT OPERATORS
 
-Fixed&		Fixed::operator++() {
+Fixed		Fixed::operator++() {
 	this->fixedPointValue++;
 	return (*this);
 }
 
-Fixed&		Fixed::operator--() {
+Fixed		Fixed::operator--() {
 	this->fixedPointValue--;
 	return (*this);
 }
 
-//-------------------------------------------------------------------------
-//--------------------------------OVERLOAD POST INCREMENT/DECREMENT OPERATORS
-
-Fixed&		Fixed::operator++(int) {
+Fixed		Fixed::operator++(int) {
 	Fixed	temp = *this;
-	++(this->fixedPointValue);
-	return (*this);
+	++this->fixedPointValue;
+	return (temp);
 }
 
-Fixed&		Fixed::operator--(int) {
+Fixed		Fixed::operator--(int) {
 	Fixed	temp = *this;
-	--(this->fixedPointValue);
-	return (*this);
+	--this->fixedPointValue;
+	return (temp);
 }
+
 //-------------------------------------------------------------------------
 //-----------------------------------------------------PUBLIC METHODS MIN/MAX
 
 Fixed	&Fixed::min(Fixed &first, Fixed &second) {
-	if (first.toFloat() < second.toFloat())
+	if (first.getRawBits() < second.getRawBits())
 		return (first);
 	return (second);
 }
 
 Fixed	&Fixed::max(Fixed &first, Fixed &second) {
-	if (first.toFloat() > second.toFloat())
+	if (first.getRawBits() > second.getRawBits())
 		return (first);
 	return (second);
 }
 
 const Fixed 	&Fixed::min(Fixed const &first, Fixed const &second) {
-	if (first.toFloat() < second.toFloat())
+	if (first.getRawBits() < second.getRawBits())
 		return (first);
 	return (second);
 }
 
 const Fixed	&Fixed::max(Fixed const &first, Fixed const &second) {
-	if (first.toFloat() > second.toFloat())
+	if (first.getRawBits() > second.getRawBits())
 		return (first);
 	return (second);
 }
 
 //-------------------------------------------------------------------------
-//-----------------------------------------------PUBLIC METHODS toFloat/toInt
+//---------------------------------------------PUBLIC METHODS toFloat/toInt
 
-float	Fixed::toFloat(void) const
-{
+float	Fixed::toFloat(void) const {
 	return ((float)this->fixedPointValue / (float)(1 << this->fractionalBits));
 }
 
-int		Fixed::toInt(void) const
-{
+int		Fixed::toInt(void) const {
 	return (this->fixedPointValue >> this->fractionalBits);
 }
 
 //-------------------------------------------------------------------------
-//-----------------------------------------------------------PUBLIC FUNCTION
+//----------------------------------------------------------PUBLIC FUNCTION
 
-std::ostream	&operator<<(std::ostream &o, Fixed const &fixed)
-{
-	o << fixed.toFloat();
-	return (o);
+std::ostream	&operator<<(std::ostream &str, Fixed const &fixed) {
+	str << fixed.toFloat();
+	return (str);
 }
