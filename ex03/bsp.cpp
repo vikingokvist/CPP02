@@ -17,7 +17,8 @@ bool	bsp(Point const a, Point const b, Point const c, Point const point)
 	float areaABP = bspArea(a, b, point);
 	float areaBCP = bspArea(point, b, c);
 	float areaCAP = bspArea(a, point, c);
-	
+
+	if (!areaABP || !areaBCP || !areaCAP)
+		return (false);
 	return (areaABC == (areaABP + areaBCP + areaCAP));
-	
 }
